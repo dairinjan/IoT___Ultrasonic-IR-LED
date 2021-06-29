@@ -1,0 +1,61 @@
+
+/**DAIRIN JANAGAP***/
+// defines variables
+#define echoPin A1
+#define trigPin A0
+#define buzzerPin A2
+#define lightSensor 9
+#define led1 7
+#define led2 8
+long duration; // variable for the duration of sound wave travel
+int distance; // variable for the distance measurement
+
+void setup() {
+  pinMode(trigPin, OUTPUT); // Sets the trigPin as an OUTPUT
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(led1, OUTPUT);
+  pinMode(led2, OUTPUT);
+  pinMode(echoPin, INPUT); // Sets the echoPin as an INPUT
+  Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
+  Serial.println("Ultrasonic Sensor HC-SR05 Test"); // print some text in Serial Monitor
+  Serial.println("with Arduino UNO R3");
+}
+void loop() {
+  // Clears the trigPin condition
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // This will set the trigPin HIGH (ACTIVE) for 10 microseconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  bool sensorValue = digitalRead(lightSensor); 
+ 
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2;  
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  if (distance <= 100)
+  {
+    //digitalWrite(pin, HIGH);
+    tone(buzzerPin, 50);
+  }
+  else
+  {
+    noTone(buzzerPin);
+  }
+  Serial.print ("it is light - "); 
+    Serial.print (sensorValue); 
+  if (sensorValue == HIGH)
+  { 
+    digitalWrite(led1, LOW);
+    digitalWrite(led2, LOW);
+  } 
+  else
+  { 
+    digitalWrite(led1, HIGH);
+    digitalWrite(led2, HIGH);
+  }
+  delay(100);
+}
